@@ -1,0 +1,87 @@
+{% extends 'adminbase.html' %}
+{% block title %}Dashboard - Add Blog{% endblock  %}
+{% block extracss %}
+      <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+{% endblock  %}
+{% block body %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+   <!-- Content -->
+   <div class="container-xxl flex-grow-1 container-p-y">
+      <div class="row">
+         <div class="col-xl">
+         {% if messages %}
+            {% for message in messages %}
+               <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                     <strong>{{message}}</strong>
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+               </div>
+            {% endfor %}
+         {% endif %}
+            <div class="card mb-4">
+               <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0">Add Blog</h5>
+               </div>
+               <div class="card-body">
+                  <form action="{% url 'addBlogForm' %}" method="POST"  enctype="multipart/form-data" >
+                    {% csrf_token %}
+
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-fullname">Title<span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                           <span id="basic-icon-default-fullname2" class="input-group-text"
+                              ><i class="bx bx-user"></i
+                              ></span>
+                           <input
+                              type="text"
+                              class="form-control"
+                              name="title"
+                              id="basic-icon-default-fullname"
+                              placeholder="Title for your Blog"
+                              aria-label=""
+                              aria-describedby="basic-icon-default-fullname2"
+                              required
+                              />
+                        </div>
+                     </div>
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-email">Blog Thumbnail<span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input
+                            type="file"
+                            name="blog_thumbnail"
+                            class="form-control"
+                            id="inputGroupFile04"
+                            aria-describedby="inputGroupFileAddon04"
+                            aria-label="Upload"
+                            accept="image/*"
+                            required
+                            />
+                        </div>
+                        <div class="form-text">Only 350 x 350 dimention picture is acceptable</div>
+                     </div>
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-company">Add Blog Content<span class="text-danger">*</span></label>
+                        <textarea id="summernote" name="blog_content"></textarea>
+                     </div>
+                     
+                     <button type="submit" class="btn btn-primary" id="addButton">Submit</button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endblock %}
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote();
+          });
+    </script>
+{% endblock  %}

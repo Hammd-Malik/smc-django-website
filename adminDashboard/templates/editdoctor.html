@@ -1,0 +1,205 @@
+{% extends 'adminbase.html' %}
+{% block title %}Dashboard - Edit Doctor{% endblock  %}
+{% block extracss %}
+      <link rel="stylesheet" href="/static/admin/assets/tagify-master/dist/tagify.css">
+{% endblock  %}
+{% block body %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+   <!-- Content -->
+   <div class="container-xxl flex-grow-1 container-p-y">
+      <div class="row">
+         <div class="col-xl">
+         {% if messages %}
+            {% for message in messages %}
+               <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                     <strong>{{message}}</strong>
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+               </div>
+            {% endfor %}
+         {% endif %}
+            <div class="card mb-4">
+               <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0">Edit Doctor Details</h5>
+               </div>
+               <div class="card-body">
+                  <form action="{% url 'updateDoctorForm' %}" method="POST" id="drForm" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{doctor.id}}">
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-fullname">Full Name <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                           <span id="basic-icon-default-fullname2" class="input-group-text"
+                              ><i class="bx bx-user"></i
+                              ></span>
+                           <input
+                              type="text"
+                              class="form-control"
+                              name="name"
+                              value="{{doctor.name}}"
+                              id="basic-icon-default-fullname"
+                              placeholder="John Doe"
+                              aria-label="John Doe"
+                              aria-describedby="basic-icon-default-fullname2"
+                              required
+                              />
+                        </div>
+                     </div>
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-email">Email<span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                           <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                           <input
+                              type="text"
+                              name="email"
+                              value="{{doctor.email}}"
+                              id="basic-icon-default-email"
+                              class="form-control"
+                              placeholder="john.doe"
+                              aria-label="john.doe"
+                              aria-describedby="basic-icon-default-email2"
+                              required
+
+                              />
+                           <span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
+                        </div>
+                     </div>
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-phone">Phone No<span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                           <span id="basic-icon-default-phone2" class="input-group-text"
+                              ><i class="bx bx-phone"></i
+                              ></span>
+                           <input
+                              type="number"
+                              name="phone_number"
+                              value="{{doctor.phoneNumber}}"
+                              id="basic-icon-default-phone"
+                              class="form-control phone-mask"
+                              placeholder="658 799 8941"
+                              aria-label="658 799 8941"
+                              aria-describedby="basic-icon-default-phone2"
+                              required
+                              />
+                        </div>
+                     </div>
+
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-url">Calendy Meeting Link<span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                           <span id="basic-icon-default-url" class="input-group-text"
+                              ><i class='bx bx-calendar-check'></i></span>
+                           <input
+                              type="url"
+                              name="meeting_link"
+                              value="{{doctor.meeting_link}}"
+                              id="basic-icon-default-phone"
+                              class="form-control phone-mask"
+                              placeholder="url"
+                              aria-label="url"
+                              aria-describedby="basic-icon-default-phone"
+                              required
+                              />
+                        </div>
+                     </div>
+
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-email">Doctor Picture</label>
+                        <div class="input-group">
+                            <input
+                            type="file"
+                            name="doctor_picture"
+                            class="form-control"
+                            id="inputGroupFile04"
+                            aria-describedby="inputGroupFileAddon04"
+                            aria-label="Upload"
+                            accept="image/*"
+                            />
+                        </div>
+                        <div class="form-text">Only 350 x 350 dimention picture is acceptable</div>
+                     </div>
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-company">Houspital <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                           <span id="basic-icon-default-company2" class="input-group-text"
+                              ><i class="bx bx-buildings"></i
+                              ></span>
+                           <input
+                              type="text"
+                              name="houspital"
+                              id="basic-icon-default-company"
+                              value="{{doctor.houspitalName}}"
+                              class="form-control"
+                              placeholder="Currently working Location"
+                              aria-label="ACME Inc."
+                              aria-describedby="basic-icon-default-company2"
+                              required
+                              />
+                        </div>
+                     </div>
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-company">Specialization <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                           <span id="basic-icon-default-company2" class="input-group-text"
+                              ><i class="bx bx-buildings"></i
+                              ></span>
+                           <select class="form-select" name="specialization">
+                              <option value="{{doctor.specialization}}" selected="selected">{{doctor.specialization}}</option>
+                              <option value="Allergy and immunology">Allergy and immunology</option>
+                              <option value="Anesthesiology">Anesthesiology</option>
+                              <option value="Dermatology">Dermatology</option>
+                              <option value="Diagnostic radiology">Diagnostic radiology</option>
+                              <option value="Emergency medicine">Emergency medicine</option>
+                              <option value="Family medicine">Family medicine</option>
+                              <option value="Internal medicine">Internal medicine</option>
+                              <option value="Medical genetics">Medical genetics</option>
+                              <option value="Neurology">Neurology</option>
+                              <option value="Nuclear medicine">Nuclear medicine</option>
+                              <option value="Obstetrics and gynecology">Obstetrics and gynecology</option>
+                              <option value="Ophthalmology">Ophthalmology</option>
+                              <option value="Pathology">Pathology</option>
+                              <option value="Pediatrics">Pediatrics</option>
+                              <option value="Physical medicine and rehabilitation">Physical medicine and rehabilitation</option>
+                              <option value="Preventive medicine">Preventive medicine</option>
+                              <option value="Psychiatry">Psychiatry</option>
+                              <option value="Radiation oncology">Radiation oncology</option>
+                              <option value="Surgery">Surgery</option>
+                              <option value="Urology">Urology</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-company">Services Offered<span class="text-danger">*</span></label>
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-company2" class="input-group-text"
+                               ><i class="bx bx-buildings"></i
+                               ></span>
+                        <textarea name="tags" class="form-control" id="" cols="30" rows="4">{{doctor.services}}</textarea>
+                        </div>
+                       
+                     </div>
+                     <button type="submit" class="btn btn-primary" id="addButton">Update</button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endblock  %}
+{% block scripts %}
+    <script src="/static/admin/assets/tagify-master/dist/tagify.js"></script>
+    <script>
+        var input = document.querySelector('textarea[name=tags]'),
+        tagify =new Tagify( input );
+
+        $("#drForm input").not("#addButton").keydown(function(event) {
+            if (event.keyCode == 13) {
+              event.preventDefault();
+              return false;
+            }
+        });
+    </script>
+{% endblock  %}

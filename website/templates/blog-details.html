@@ -1,0 +1,85 @@
+﻿{% extends 'base.html' %} 	
+{% block title %} SMC {% endblock  %}
+{% block body %}
+	
+	<div class="page-content bg-white">
+		<!-- Inner Banner -->
+		<div class="banner-wraper">
+			<div class="page-banner" style="background-image:url(images/banner/img1.jpg.jfif);">
+				<div class="container">
+					<div class="page-banner-entry text-center">
+						<h1>Blog Details</h1>
+						<!-- Breadcrumb row -->
+						<nav aria-label="breadcrumb" class="breadcrumb-row">
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'homeView' %}"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Home</a></li>
+								<li class="breadcrumb-item"><a href="{% url 'blogsView' %}">Blog</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Blog Details</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<img class="pt-img1 animate-wave" src="images/shap/wave-blue.png" alt="">
+				<img class="pt-img2 animate2" src="images/shap/circle-dots.png" alt="">
+				<img class="pt-img3 animate-rotate" src="images/shap/plus-blue.png" alt="">
+			</div>
+			<!-- Breadcrumb row END -->
+		</div>
+		<!-- Inner Banner end -->
+		
+		<section class="section-area section-sp1 bg-white">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 col-lg-7 col-xl-8 mb-30 mb-md-50">
+						<!-- blog start -->
+						{% for b in blog %}
+						<div class="blog-card blog-single">
+							<div class="post-media">
+								<img src="/media/{{b.thumbnail}}" alt="ok">
+							</div>
+							<div class="info-bx">
+								<ul class="post-meta">
+									<li class="author"><a href="blog-details.html"><img src="/static/website/images/admin-profile.jpg" alt=""> Admin</a></li>
+									<li class="date"><i class="far fa-calendar-alt"></i>{{b.created| date:"F d Y" }}</li>
+								</ul>
+								<div class="ttr-post-title">
+									<h2 class="post-title">{{b.title}}</h2>
+								</div>
+								<div class="ttr-post-text">
+									<p>{{b.content | safe}}</p>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						<!-- blog END -->
+					</div>
+					<div class="col-md-12 col-lg-5 col-xl-4 mb-30">
+						<aside class="side-bar sticky-top aside-bx">
+							<div class="widget recent-posts-entry">
+								<h4 class="widget-title">Recent Posts</h4>
+								<div class="widget-post-bx">
+									{% for rb in rblogs  %}
+									<div class="widget-post clearfix">
+										<div class="ttr-post-media"> <img src="/media/{{rb.thumbnail}}" width="200" height="143" alt=""> </div>
+										<div class="ttr-post-info">
+											<div class="ttr-post-header">
+												<h6 class="post-title"><a href="{% url 'blogRead' rb.slug %}">{{rb.title}}</a></h6>
+											</div>
+											<ul class="post-meta">
+												<li class="date"><i class="far fa-calendar-alt"></i>{{rb.created| date:"F d Y" }}</li>
+											</ul>
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+						</aside>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+	</div>
+
+{% endblock %}
+    

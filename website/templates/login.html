@@ -1,0 +1,140 @@
+{% extends 'base.html' %} 
+{% block title %}MediPro - Login{% endblock  %}
+{% block body %}
+
+	<!-- Login -->
+	<div class="section-area account-wraper2" style="margin-top:100px;">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-xl-5 col-lg-6 col-md-8">
+					<div class="appointment-form form-wraper">
+						<div class="logo">
+							<img src="static/website/images/logonew.png" alt="">
+						</div>
+						<div class="tab-content" id="myTabContent">
+							<div class="tab-pane fade show active" id="formLogin" role="tabpanel" aria-labelledby="formLogin">
+								{% if messages %}
+									{% for message in messages %}
+										<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+											<strong>{{message}}</strong>
+											<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+										</div>
+									{% endfor %}
+								{% endif %}
+								<form action="{% url 'userLoginForm' %}" method="POST"> 
+                                    {% csrf_token %}
+									<div class="form-group">
+										<input type="email" name="email" class="form-control" placeholder="Email" required>
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" class="form-control" placeholder="Password" required>
+									</div>
+									<div class="form-group">
+										<button type="submit" class="btn mb-30 btn-lg btn-primary w-100">login</button>
+									</div>
+									<div class="text-center">						
+										<p class="mt-0">Dont have any account?</p>
+										<a class="btn btn-lg btn-secondary w-100" data-toggle="tab" href="#formRegister">Register</a>
+									</div>											
+								</form>
+							</div>
+							<div class="tab-pane fade" id="formRegister" role="tabpanel" aria-labelledby="formRegister">
+								<div class="tab-pane fade show active" id="register-home" role="tabpanel" aria-labelledby="register-home">
+                                    <div id="message" style="display:none;">
+                                        <div class="alert alert-danger" role="alert" id="messagetext" >
+                                            
+                                          </div> 
+                                    </div>
+									{% comment %} {% if messages %}
+										{% for message in messages %}
+											<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+												<strong>{{message}}</strong>
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+											</div>
+										{% endfor %}
+									{% endif %} {% endcomment %}
+									<form method="POST" id='registeruserform'>
+                                        {% csrf_token %}
+										<div class="form-group">
+											<input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
+										</div>
+										<div class="form-group">
+											<input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+										</div>
+										
+										<div class="form-group">
+											<input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+										</div>	
+										<div class="form-group">
+											<button type="submit" class="btn btn-primary w-100 radius-xl">Register Now</button>
+										</div>													
+										<div class="text-center mt-40">						
+											<p class="mt-0">Already have an account?</p>
+											<a class="btn btn-lg btn-secondary w-100" data-toggle="tab" href="#formLogin">Login</a>
+										</div>	
+									</form>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="formForget" role="tabpanel" aria-labelledby="formForget">
+								<div class="tab-pane fade show active" id="login-home" role="tabpanel" aria-labelledby="login-home">
+									<form action="#">
+										<div class="form-group">
+											<input type="password" class="form-control" placeholder="Password">
+										</div>
+										<div class="form-group">
+											<input type="password" class="form-control" placeholder="New Password">
+										</div>						
+										<div class="form-group">
+											<button type="button" class="btn btn-primary w-100 radius-xl">Submit</button>
+										</div>													
+										<div class="text-center mt-40">						
+											<p class="mt-0">Already have an account?</p>
+											<a class="btn btn-lg btn-secondary w-100" data-toggle="tab" href="#formLogin">Login</a>
+										</div>	
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>					
+		</div>
+	</div>
+{% endblock %}
+{% block script %}
+
+
+<script>
+	$(document).on('submit', '#register-home',function(e){
+		e.preventDefault();
+		$.ajax({
+			type:'POST',
+			url:'{% url "userRegisterForm" %}',
+			data:{
+				name:$('#name').val(),
+				email:$('#email').val(),
+				password:$('#password').val(),
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: 'POST'
+			},
+			success:function(json){
+				document.getElementById("registeruserform").reset();
+                console.log(json['message'])
+				$('#message').show('fast');
+				var data = JSON.stringify(json)
+				$('#messagetext').append("<strong>"+json['message']+"</strong>")
+				
+				setTimeout(function() {
+                    $('#message').hide('fast');
+                }, 5000);
+
+			},
+			error : function(xhr,errmsg,err) {
+			console.log(xhr.status + ": " + xhr.responseText);
+		}
+		});
+	});
+</script>
+
+{% endblock  %}
+	
