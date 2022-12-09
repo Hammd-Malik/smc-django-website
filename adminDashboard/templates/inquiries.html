@@ -1,0 +1,75 @@
+{% extends 'adminbase.html' %} 
+{% block title %}Dashboard - Inquiries{% endblock %} 
+{% block body %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+  <!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+      <div class="col-xl">
+        <div class="card">
+          <h5 class="card-header">Inquiries</h5>
+          <div class="table-responsive text-nowrap">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>subject</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for d in data %}
+                <tr>
+                    <td>{{d.name}}</td>
+                    <td>{{d.email}}</td>
+                    <td>{{d.subject}}</td>
+                    <td>{% if d.status == 0 %}
+                      <span class="badge bg-primary">Unread</span>
+                      {% else %}
+                      <span class="badge bg-success">Read</span>
+                      {% endif %}
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <button
+                            type="button"
+                            class="btn p-0 dropdown-toggle hide-arrow"
+                            data-bs-toggle="dropdown"
+                          >
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'inquiriesDetailView' d.id %}"
+                              ><i class="bx bx-right-arrow-alt me-1"></i>Open</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="{% url 'deleteInquirie' d.id %}"
+                              ><i class="bx bx-trash-alt me-1"></i>Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+
+{% endblock %}
+{% block scripts %} 
+
+
+
+{% endblock %}

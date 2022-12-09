@@ -1,0 +1,368 @@
+{% extends 'base.html' %} 
+{% block title %}MediPro - Take Test{% endblock  %}
+{% block body %}
+   <div class="page-content bg-white">
+      <!-- Inner Banner -->
+      <div class="banner-wraper">
+         <div class="page-banner" style="background-image:url(static/website/images/banner/img1.jpg.jfif);">
+            <div class="container">
+               <div class="page-banner-entry text-center">
+                  <h1>Take Test</h1>
+                  <!-- Breadcrumb row -->
+                  <nav aria-label="breadcrumb" class="breadcrumb-row">
+                     <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                           <a href="{% url 'homeView' %}">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
+                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                              </svg>
+                              Home
+                           </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Take Test</li>
+                     </ul>
+                  </nav>
+               </div>
+            </div>
+            <img class="pt-img1 animate-wave" src="static/website/images/shap/wave-blue.png" alt="">
+            <img class="pt-img2 animate2" src="static/website/images/shap/circle-dots.png" alt="">
+            <img class="pt-img3 animate-rotate" src="static/website/images/shap/plus-blue.png" alt="">
+         </div>
+         <!-- Breadcrumb row END -->
+      </div>
+      <!-- Inner Banner end -->
+      <!-- main form area -->
+      <section class="section-area section-sp1">
+         <div class="container">
+            <!-- test form -->
+            <!-- MultiStep Form -->
+            <div class="row">
+               <div class="col-md-6 offset-md-3">
+                  <form id="msform">
+                     <!-- progressbar -->
+                     <ul id="progressbar">
+                        <li class="active">Symptom</li>
+                        <li>Test</li>
+                        <li>Result</li>
+                     </ul>
+                     <!-- fieldsets -->
+                     <!-- step 1 -->  
+                     <fieldset>
+                        <h2 class="fs-title">Symptom</h2>
+                        <h3 class="fs-subtitle">add all the field to get the accurate results.</h3>
+                        <div class="container inputs-box" style="text-align:left" >
+
+                           <label for="name">Symptom<span class="text-danger">*</span></label>
+                           <input type="text" class="" name="name" id="name" placeholder="symptom" required>
+
+                           
+                           <label for="days">From how many days?<span class="text-danger">*</span></label>
+                           <input type="number" class="" name="days" id="days" placeholder="days" required>
+
+                           <label for="age">Age<span class="text-danger">*</span></label>
+                           <input type="number" class="" id="age" name="age" placeholder="age"  maxlength="3">
+                        </div>
+                        <small style="color:red;font-size:14px;display:none" id="errorLog">Please fill all the required fields</small>
+                        <input type="button" name="next" class="next action-button" id="firstSubmit" value="Next"/>
+                     </fieldset>
+                     <!-- step 2 -->
+                     <fieldset>
+                        <h2 class="fs-title">Anwsers The Following Questions</h2>
+                        <div style="text-align:left">
+                           <label for="question">Are you experiencing <span id="mainSymp"></span>?</label><br>
+
+                           <label for="yes">Yes</label>
+                           <input type="radio" name="radio1" value="Yes" id="yes" style="width:30px"/>
+
+                           <label for="no">No</label>
+                           <input type="radio" name="radio1" value="No" id="no" style="width:30px"/>
+                           <input type="hidden" id="Xval" name="Xval" />
+                        </div>
+                        <!-- <input type="button" name="previous" class="previous action-button-previous" value="Vorige"/> -->
+                        <input type="button" id="submitAnswer" class="action-button" value="Next"/>
+                     </fieldset>
+                     <!-- Result -->
+                     <fieldset>
+                        <h2 class="fs-title">Result</h2>
+                        <h3 class="fs-subtitle"></h3>
+                        <div style="text-align:left">
+                           <h4>Disease Name:</h4>
+                           <p id="disease"></p>
+                           <h4>Disease Discription</h4>
+                           <p id="disease_description">Arthritis is the swelling and tenderness of one or more of your joints. The main symptoms of arthritis are joint pain and stiffness, which typically worsen with age. The most common types of arthritis are osteoarthritis and rheumatoid arthritis.</p>
+                           <h4>Take follwing Measures.</h4>
+                           <ul>
+                              <li id="prevention"></li>
+                           </ul>
+                           <br>
+                        </div>
+                  </form>
+                  <div style="text-align:center">
+                     <form action="{% url 'recommendedDoctors' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="disease" id="diseaseName">
+                        <button class="btn btn-primary">Recommended Doctors</button>
+                     </form>
+                  </fieldset>
+                  </div>
+               </div>
+            </div>
+            <!-- /.MultiStep Form -->
+         </div>
+      </section>
+
+   </div>
+{% endblock %}
+{% block script %}
+   <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+   <script>
+
+      //jQuery time
+      var current_fs, next_fs, previous_fs; //fieldsets
+      var left, opacity, scale; //fieldset properties which we will animate
+      var animating; //flag to prevent quick multi-click glitches
+      var questions; 
+      var present_disease = "";
+      var ANSWERS = [];
+      var days = "";
+      
+     // var days = $("#days").val();
+
+      $("#firstSubmit").on('click', function(){
+
+         if(animating) return false;
+         animating = true;
+         current_fs = $(this).parent();
+         next_fs = $(this).parent().next();
+
+         //activate next step on progressbar using the index of next_fs
+         $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+         var symptom = $("#name").val();
+         var days = $("#days").val();
+         var age = $("#age").val();
+         
+         if(symptom == '' || days == '' || age == '')
+         {
+            $("#errorLog").show();
+            return;
+         }
+
+        var data = {
+         symptom: symptom,
+         days: days
+         };
+      
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/vnd.api+json");
+
+      var raw = JSON.stringify(data);
+
+      (async () => {
+         var requestOptions = {
+         method: 'POST',
+         headers: myHeaders,
+         body: raw,
+         redirect: 'follow'
+         };
+         var response = await fetch("http://127.0.0.1:5000/taketest", requestOptions);
+         response = await response.json();
+
+         if (response['error']){
+            console.log(response['error'])
+         }else{
+            console.log("Model running properly")
+            questions = response[0].symptoms_experince;
+            present_disease = response[0].present_disease;
+         }
+         
+         screenToggler(0);
+
+         
+         next_fs.show(); 
+         //hide the current fieldset with style
+         current_fs.animate({opacity: 0}, {
+            step: function(now, mx) {
+               //as the opacity of current_fs reduces to 0 - stored in "now"
+               //1. scale current_fs down to 80%
+               scale = 1 - (1 - now) * 0.2;
+               //2. bring next_fs from the right(50%)
+               left = (now * 50)+"%";
+               //3. increase opacity of next_fs to 1 as it moves in
+               opacity = 1 - now;
+               current_fs.css({
+               'transform': 'scale('+scale+')',
+               'position': 'absolute'
+               });
+               next_fs.css({'left': left, 'opacity': opacity});
+            }, 
+            duration: 800, 
+            complete: function(){
+               current_fs.hide();
+               animating = false;
+            }, 
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
+         });
+         
+
+         
+      })();   
+   });
+      
+      function LastScreen(){
+         //$(".next").click(function(){
+            
+            animating = true;
+            current_fs = $('#submitAnswer').parent();
+            next_fs = $('#submitAnswer').parent().next();
+            //activate next step on progressbar using the index of next_fs
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+            
+            //show the next fieldset
+            next_fs.show(); 
+            //hide the current fieldset with style
+            current_fs.hide();
+            current_fs.animate({opacity: 0}, {
+               step: function(now, mx) {
+                  //as the opacity of current_fs reduces to 0 - stored in "now"
+                  //1. scale current_fs down to 80%
+                  scale = 1 - (1 - now) * 0.2;
+                  //2. bring next_fs from the right(50%)
+                  left = (now * 50)+"%";
+                  //3. increase opacity of next_fs to 1 as it moves in
+                  opacity = 1 - now;
+                  current_fs.css({
+               'transform': 'scale('+scale+')',
+               'position': 'absolute'
+               });
+                  next_fs.css({'left': left, 'opacity': opacity});
+               }, 
+               duration: 800, 
+               complete: function(){
+                  current_fs.hide();
+                  animating = false;
+               }, 
+               //this comes from the custom easing plugin
+               easing: 'easeInOutBack'
+            });
+         //});
+      }
+      function screenToggler(x)
+      {
+         var questionCount = questions.length;         
+         $("#mainSymp").text(questions[x].symptom_check);
+         $("#Xval").val(x);
+      }
+      
+      $("#submitAnswer").on('click', function(){
+         var input = $("input[name='radio1']:checked").val();
+         $("input[name='radio1']").prop('checked', false);;
+         var Xval = $("#Xval").val();
+         if(input == 'Yes')
+         {
+            var name = $("#mainSymp").text();
+            console.log(name);
+            ANSWERS.push(name);
+         }
+         Xval = parseInt(Xval);  
+         if((Xval+1) == questions.length)
+         {
+            
+            (async () => {
+               
+               var data_next = {
+                  days: days,
+                  symptom_exp: ANSWERS,
+                  present_disease: present_disease
+               };
+
+               var raw_data = JSON.stringify(data_next);
+               var myHeaders = new Headers();
+               myHeaders.append("Content-Type", "application/vnd.api+json");
+      
+               var requestOptions = {
+               method: 'POST',
+               headers: myHeaders,   
+               body: raw_data,
+               redirect: 'follow'
+               };
+      
+               var response = await fetch("http://127.0.0.1:5000/predict-disease", requestOptions);
+               response = await response.json();
+               console.log(response)
+               $('#disease').text(response[0].disease)
+               $('#disease_description').text(response[0].disease_description)
+
+               
+               let diseaseName = response[0].disease;
+               let repalceName = diseaseName.replace(' ', '-') 
+               $('#diseaseName').val(repalceName)
+               console.log(repalceName)
+               
+
+
+
+               
+
+               let data = response[0].preventions;
+               let list = $('#prevention')
+               data.forEach((item)=>{
+                  let li = document.createElement("li");
+                  li.innerText = item;
+                  list[0].appendChild(li);
+                })
+
+      
+            })();
+            LastScreen();
+            return;
+         }
+
+         Xval++;
+         screenToggler(Xval);
+
+      });
+      
+      /*
+      $(".previous").click(function(){
+         if(animating) return false;
+         animating = true;
+         
+         current_fs = $(this).parent();
+         previous_fs = $(this).parent().prev();
+         
+         //de-activate current step on progressbar
+         $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+         
+         //show the previous fieldset
+         previous_fs.show(); 
+         //hide the current fieldset with style
+         current_fs.animate({opacity: 0}, {
+            step: function(now, mx) {
+               //as the opacity of current_fs reduces to 0 - stored in "now"
+               //1. scale previous_fs from 80% to 100%
+               scale = 0.8 + (1 - now) * 0.2;
+               //2. take current_fs to the right(50%) - from 0%
+               left = ((1-now) * 50)+"%";
+               //3. increase opacity of previous_fs to 1 as it moves in
+               opacity = 1 - now;
+               current_fs.css({'left': left});
+               previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+            }, 
+            duration: 800, 
+            complete: function(){
+               current_fs.hide();
+               animating = false;
+            }, 
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
+         });
+      });
+      */
+      $(".submit").click(function(){
+         return false;
+      })
+   </script>
+{% endblock  %}

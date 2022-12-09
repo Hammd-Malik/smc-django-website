@@ -1,0 +1,36 @@
+{% extends 'adminbase.html' %}
+{% block title %}Dashboard - Doctor Details{% endblock  %}
+{% block body %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+   <!-- Content -->
+   <div class="container-xxl flex-grow-1 container-p-y">
+      <div class="row">
+         <div class="col-xl">
+            <div class="card">
+                <h5 class="card-header">Read Messege</h5>
+                <div class="row px-4">
+                    <div class="col-md-6">
+                        <h5><strong>Name:</strong> {{message.name}}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><strong>Email:</strong> {{message.email}}</h5>
+                    </div>
+                    <div class="col-md-12">
+                        <h5><strong>Subject:</strong> {{message.subject}}</h5>
+                    </div>
+                    <div class="col-md-12">
+                        <h5><strong>Message:</strong></h5>
+                        <p>{{message.message}}</p>
+                    </div>
+
+                    
+                </div>
+              </div>
+         </div>
+      </div>
+   </div>
+   <!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endblock  %}

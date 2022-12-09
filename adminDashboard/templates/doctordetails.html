@@ -1,0 +1,49 @@
+{% extends 'adminbase.html' %}
+{% block title %}Dashboard - Doctor Details{% endblock  %}
+{% block body %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+   <!-- Content -->
+   <div class="container-xxl flex-grow-1 container-p-y">
+      <div class="row">
+         <div class="col-xl">
+            <div class="card">
+                <h5 class="card-header">Doctor Details</h5>
+                <div class="row px-4">
+                    <div class="col-md-6">
+                        <h4>Name</h4>
+                        <p>{{doctor.name}}</p>
+                        <h4>Email</h4>
+                        <p>{{doctor.email}}</p>
+                        <h4>Phone No</h4>
+                        <p>{{doctor.phoneNumber}}</p>
+                        <h4>Currenlty Working</h4>
+                        <p>{{doctor.houspitalName}}</p>
+                        <h4>Services</h4>
+                        <ul>
+                            {% for r in res %}
+                            <li>{{r.value}}</li>
+                            {% endfor %}
+                        </ul>
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <img class="img-thumbnail border" src="/media/{{doctor.doctorPicture}}" alt="dr image here" style="width:200px; height:200px;">
+                        <h4 class="mt-4">Specialization</h4>
+                        <p>{{doctor.specialization}}</p>
+
+                        <h4 class="mt-4">Calendy Meeting Link</h4>
+                        <a href="{{doctor.meeting_link}}"><button class="btn btn-info">Link Here</button></a>
+                        
+                    </div>
+                    <a href="{% url 'editDoctorView' doctor.id %}" ><button class="btn btn-primary" style="width:120px; margin:10px;">Edit</button></a>
+                </div>
+                
+              </div>
+         </div>
+      </div>
+   </div>
+   <!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endblock  %}
