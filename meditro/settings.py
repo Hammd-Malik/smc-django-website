@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'meditro.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'meditro',
+        'NAME': 'railway',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'PASSWORD': 'FYONCi8Ian9mkNo4eDvF',
+        'HOST': 'containers-us-west-151.railway.app',
+        'PORT': '6449',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
