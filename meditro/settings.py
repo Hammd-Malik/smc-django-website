@@ -126,7 +126,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-CSRF_TRUSTED_ORIGINS = ['www.smartmedicoconsultant.com']
+CSRF_TRUSTED_ORIGINS = ['http://www.smartmedicoconsultant.com']
 
 
 # Static files (CSS, JavaScript, Images)
