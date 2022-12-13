@@ -41,22 +41,31 @@ def login_form(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        if email != "" and password != "":
-            adminEmail = User.objects.filter(email=email, is_superuser=1).last()
-            if adminEmail:
-                matchPasword = check_password(password, adminEmail.password)
-                if matchPasword:
-                    request.session['adminEmail'] = email
-                    return redirect('dashboardView')
+        password_len = len(password)
+
+        if email != "" and password != "": 
+            if password_len > 4:
+
+                adminEmail = User.objects.filter(email=email, is_superuser=1).last()
+                if adminEmail:
+                    matchPasword = check_password(password, adminEmail.password)
+                    if matchPasword:
+                        request.session['adminEmail'] = email
+                        return redirect('dashboardView')
+                    else:
+                        messages.error(request, "Incorrect Password")
+                        return redirect('loginView')
                 else:
-                    messages.error(request, "Incorrect Password")
+                    messages.error(request, "Incorrect Email")
                     return redirect('loginView')
             else:
-                messages.error(request, "Incorrect Email")
+                messages.error(request, "Password must be greater than 4 characters")
                 return redirect('loginView')
+                
         else:
             messages.error(request, "Email and Password are required Fields")
             return redirect('loginView')
+            
 
     return redirect('loginView')
 

@@ -55,9 +55,14 @@ def userLogin_form(request):
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
+        password_len = len(password)
+
         if email == "" or password == "":
             messages.error(request, "All Fields are required")
             return redirect("userLoginView")
+            if password_len  < 5:
+                messages.error(request, "Password muct be greater then 5 characters")
+                return redirect("userLoginView")
         else:
             user = User.objects.filter(email=email).last()
             if user:
@@ -114,7 +119,6 @@ def doctors_view(request):
 def recommendedDoctors(request):
     if request.method == "POST":
         disease = request.POST.get('disease')
-        print(disease)
         recDr = doctor_detail.objects.filter(services__contains=disease)
         context = {
             'doctors' : recDr,
