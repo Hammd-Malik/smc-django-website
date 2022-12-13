@@ -20,13 +20,6 @@ urlpatterns = [
     path('login-user', views.userLogin_form, name='userLoginForm'),
     path('logout', views.user_logout, name='userLogout'),
 
-
     # path('user-setting', views.userSetting_view, name='userSetting View'),
-
-
-
-
-
-
 
 ]
