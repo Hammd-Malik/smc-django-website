@@ -1,7 +1,8 @@
 asgiref==3.5.2
 Django==4.1.2
+gunicorn==20.1.0
 joblib==1.2.0
-# mysqlclient==2.1.1
+mysqlclient==2.1.1
 numpy==1.23.4
 pandas==1.5.1
 Pillow==9.2.0
@@ -14,4 +15,4 @@ sklearn==0.0
 sqlparse==0.4.3
 threadpoolctl==3.1.0
 tzdata==2022.4
-gunicorn==20.1.0
+whitenoise==6.2.0
