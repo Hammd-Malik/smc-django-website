@@ -30,6 +30,7 @@ SECRET_KEY = 'django-insecure-m18($a3mnq8uq2bhbm=lap(xxmb*hp#is#+1)%65t%sxkr&y__
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://www.smartmedicoconsultant.com']
 
 
 # Application definition
