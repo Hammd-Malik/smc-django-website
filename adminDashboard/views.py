@@ -89,7 +89,7 @@ def allDoctors_view(request):
         context={
             'doctors': doctors,
         }
-        return render(request, 'allDoctors.html', context)
+        return render(request, 'alldoctors.html', context)
     else:
         return redirect('loginView')
 
