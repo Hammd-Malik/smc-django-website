@@ -186,7 +186,7 @@ def updateDoctor_form(request):
                     doctor_detail.objects.filter(id=id).update(name=name, email=email, phoneNumber=phone, houspitalName=houspital,
                     specialization=specialization, services=services, meeting_link=meeting_link)
 
-                    os.remove(doctor.doctorPicture.path)
+                    # os.remove(doctor.doctorPicture.path)
                     doctor.doctorPicture = doctorPicture
                     doctor.save()
                     return redirect('doctorDetailsView', id)
