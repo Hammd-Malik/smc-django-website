@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-m18($a3mnq8uq2bhbm=lap(xxmb*hp#is#+1)%65t%sxkr&y__
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CSRF_TRUSTED_ORIGINS = ['https://www.smartmedicoconsultant.com']
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5000",
