@@ -30,6 +30,7 @@ SECRET_KEY = 'django-insecure-m18($a3mnq8uq2bhbm=lap(xxmb*hp#is#+1)%65t%sxkr&y__
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
 CSRF_TRUSTED_ORIGINS = ['https://www.smartmedicoconsultant.com']
 
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic', 
+    'corsheaders',
     'website',
     'adminDashboard'
 ]
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'meditro.urls'
