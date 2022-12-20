@@ -32,7 +32,10 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 CSRF_TRUSTED_ORIGINS = ['https://www.smartmedicoconsultant.com']
-
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5000",
+    "https://www.smartmedicoconsultant.com"
+]
 
 # Application definition
 
