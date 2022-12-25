@@ -168,7 +168,7 @@
          body: raw,
          redirect: 'follow'
          };
-         var response = await fetch("http://127.0.0.1:5000/taketest", requestOptions);
+         var response = await fetch("https://model.smartmedicoconsultant.com/taketest", requestOptions);
          response = await response.json();
 
          if (response['error']){
@@ -292,7 +292,7 @@
                redirect: 'follow'
                };
       
-               var response = await fetch("http://127.0.0.1:5000/predict-disease", requestOptions);
+               var response = await fetch("https://model.smartmedicoconsultant.com/predict-disease", requestOptions);
                response = await response.json();
                console.log(response)
                $('#disease').text(response[0].disease)
