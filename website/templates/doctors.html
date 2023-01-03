@@ -39,9 +39,10 @@
 							<div class="team-info">
 								<div class="team-info-comntent">
 									<h4 class="title">{{dr.name}}</h4>
-									<span class="text-secondary">{{dr.specialization}}</span>
+									<span class="text-secondary">{{dr.specialization}}</span><br>
+									<span class="text-primary">{{dr.houspitalName}}</span>
 								</div>
-								<a href="" class="btn btn-primary" onclick="Calendly.initPopupWidget({url: '{{dr.meeting_link}}'});return false;">Schedule Meeting</a>
+								<a href="" class="btn btn-primary" onclick="Calendly.initPopupWidget({url: '{{dr.meeting_link}}'});return false;">Schedule Meeting</a><a href="tel:{{dr.phoneNumber}}" class="btn btn-primary" style="margin-left:10px;"><i class="fas fa-regular fa-phone"></i></a>
 							</div>
 						</div>
 					</div>
